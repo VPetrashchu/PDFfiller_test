@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test example</title>
+</head>
+<body>
+<div id="box"></div>
+<style type="text/css">
+body {
+    padding: 0;
+    margin: 0;
+}
+
+#box {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+.box-element {
+    float: left;
+}
+</style>
+<script type="text/javascript">
+(function(params) {
+
+    var box = document.getElementById('box');
+    var height = box.clientHeight;
+
+    for (var i = 0, ilen = params.lines.length; i < ilen; i++) {
+        var line = params.lines[i];
+        var lineHeight = Math.floor(height / ilen);
+        var lnode = document.createElement('div');
+        if (i === (ilen - 1)) {
+            lnode.style.height = height - lineHeight * (ilen - 1) + 'px';
+        } else {
+            lnode.style.height = lineHeight + 'px';
+        }
+        lnode.style.backgroundColor = line.background;
+        box.appendChild(lnode);
+
+        for (var j = 0, jlen = line.elements.length; j < jlen; j++) {
+            var element = line.elements[j];
+            var enode = document.createElement('div');
+            enode.className = 'box-element';
+            enode.style.width = element.width + '%';
+            enode.style.backgroundColor = element.background;
+            enode.style.height = lnode.style.height;
+
+            lnode.appendChild(enode);
+            element.enode = enode;
+        }
+
+        setInterval(function(line) {
+            for (var j = 0, jlen = line.elements.length; j < jlen; j++) {
+                var element = line.elements[j];
+                var color = '#';
+                for (var k = 0; k < 6; k++) {
+                    color += (Math.floor(Math.random() * 16) + 1).toString(16);
+                }
+
+                element.enode.style.backgroundColor = color;
+            }
+        }, line.updateTime, line);
+    }
+})({
+    lines: [{
+        background: '#00F',
+        updateTime: 1000,
+        elements: [{
+            background: '#eafcff',
+            width: 25
+        }, {
+            background: '#23ff4a',
+            width: 30
+        }, {
+            background: '#b1d6ff',
+            width: 45
+        }]
+    }, {
+        background: '#ff691c',
+        updateTime: 100,
+        elements: [{
+            background: '#10F',
+            width: 25
+        }, {
+            background: '#ffff00',
+            width: 50
+        }, {
+            background: '#58ff00',
+            width: 25
+        }]
+    }, {
+        background: '#ff691c',
+        updateTime: 500,
+        elements: [{
+            background: '#10F',
+            width: 25
+        }, {
+            background: '#ffff00',
+            width: 50
+        }, {
+            background: '#58ff00',
+            width: 25
+        }]
+    }]
+})
+</script>
+</body>
+</html>
